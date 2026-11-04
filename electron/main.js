@@ -1,0 +1,27 @@
+const {app,BrowserWindow} = require('electron');
+
+const createWindow = () => {
+    const win = newBrowserWindow({
+        width:800,
+        height:600,
+        webPreferences:{
+            preload: `${__dirname}/preload.js`
+        },
+    });
+
+    win.loadFile('./hosted/homePage.html')
+}
+
+app.whenReady().then(() => {
+    createWindow();
+
+    if(BrowserWindow.getAllWindows().length == 0){
+        createWindow();
+    }
+});
+
+app.on('window-all-closed', ()=>{
+    if(process.platform !== 'darwin'){
+        app.quit();
+    }
+});
